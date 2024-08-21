@@ -7,9 +7,9 @@ import json
 IS_NEW_STUDENT = False
 USERNAME = "" #Write down your Mcgill ID as a string
 PASSWORD = "" # Write down your Mcgill Password as string
-SEMESTER = "Winter 2025" # Which semester do you want to check?
-CLASSES = ["COMP 302"]
-WANTED_CRN = {1800}
+SEMESTER = "Fall 2024" # Which semester do you want to check?
+CLASSES = ["ECON 208"]
+WANTED_CRN = {2106}
 TIMER = 100 # in seconds
 
 # This bot checks for availabilities in classes specified by the user
@@ -68,17 +68,21 @@ while True:
         crn_field.send_keys(str(crn))
         submit_change_button = driver.find_elements(By.NAME, "REG_BTN")[-2]
         r_click(submit_change_button)
-        time.sleep(10)
-        class_search_button = driver.find_elements(By.NAME, "REG_BTN")[-1]
-        r_click(class_search_button)
-        if waitlist:
-            time.sleep(2)
+        if not waitlist:
+            time.sleep(10)
+            class_search_button = driver.find_elements(By.NAME, "REG_BTN")[-1]
+            r_click(class_search_button)
+        else:
+            print("entered")
+            #r_click(driver.find_element(By.NAME, "RSTS_IN")) # Clicks the action b
             choices = driver.find_elements(By.TAG_NAME, "option")
             for i in choices:
                 if i.text == "(Add(ed) to Waitlist)":
                     r_click(i)
-            time.sleep(2)
             class_search_button = driver.find_elements(By.NAME, "REG_BTN")[-1]
+            submit_change_button = driver.find_elements(By.NAME, "REG_BTN")[-2]
+            r_click(submit_change_button)
+            time.sleep(10)
             r_click(class_search_button)
         print(f"Added CRN {crn}")
         WANTED_CRN.remove(int(crn))
@@ -137,12 +141,12 @@ while True:
         
         moved = False
         for lecture in Full_availability_list:
-            if lecture[0] != "C" and int(lecture[12]) > 0 and int(lecture[1]) in WANTED_CRN:# If there are still vacant spotslecture[1] or int(lecture[1]) in WANTED_CRN:
+            if lecture[0] != "C" and int(lecture[12]) > 3 and int(lecture[1]) in WANTED_CRN:# If there are still vacant spotslecture[1] or int(lecture[1]) in WANTED_CRN:
                 take_class(lecture[1], False)
                 moved = True
                 break
             elif int(lecture[15]) > 0 and int(lecture[1]) in WANTED_CRN:# If there are still vacant spotslecture[1] or int(lecture[1]) in WANTED_CRN:
-                print("AVAILABLEEEEE\n\n\n\n\n\n\n\n\\n\n\n\n\n\n\n\n\nAVAILABLE")
+                print("AVAILABLEEEEE\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAVAILABLE")
                 take_class(lecture[1], True)
                 moved = True
                 break
