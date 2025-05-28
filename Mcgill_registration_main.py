@@ -25,10 +25,10 @@ while True:
     #Open Website
     driver.get("https://horizon.mcgill.ca/pban1/twbkwbis.P_WWWLogin")
 
-    def r_click(Button):
+    def select(Button):
         time.sleep(random.randint(3000,8000)/10000)
         Button.click()
-        
+
     #Filling Credentials
     if IS_NEW_STUDENT:
         Username, Password = driver.find_element(By.ID, "UserID"), driver.find_element(By.ID, "PIN")
@@ -42,48 +42,48 @@ while True:
                 driver.add_cookie(item)
             
         Login_Button = driver.find_element(By.TAG_NAME, "button")
-    r_click(Login_Button)
+    select(Login_Button)
 
     # Navigating once logged in
     Student_Button = driver.find_element(By.LINK_TEXT, "Student")
-    r_click(Student_Button)
+    select(Student_Button)
     Registration_Button = driver.find_element(By.LINK_TEXT, "Registration Menu")
-    r_click(Registration_Button)
+    select(Registration_Button)
     Search_Class_Button = driver.find_element(By.LINK_TEXT, "Step 2: Search Class Schedule and Add Course Sections")
-    r_click(Search_Class_Button)
+    select(Search_Class_Button)
 
     #Entering Semester
     Semester_Slider = driver.find_elements(By.TAG_NAME, "option")
     for i in Semester_Slider:
         if i.text == SEMESTER:
-            r_click(i)
+            select(i)
     Semester_Submit_Button = driver.find_elements(By.TAG_NAME, "input")
-    r_click(Semester_Submit_Button[4])
+    select(Semester_Submit_Button[4])
     
     def take_class(crn, waitlist):
         #Clicking on add_to_worksheet_button
         add_to_worksheet_button = driver.find_elements(By.NAME, "ADD_BTN")[-2]
-        r_click(add_to_worksheet_button)
+        select(add_to_worksheet_button)
         crn_field = driver.find_elements(By.NAME, "crn_in")[-1]
         crn_field.send_keys(str(crn))
         submit_change_button = driver.find_elements(By.NAME, "REG_BTN")[-2]
-        r_click(submit_change_button)
+        select(submit_change_button)
         if not waitlist:
             time.sleep(10)
             class_search_button = driver.find_elements(By.NAME, "REG_BTN")[-1]
-            r_click(class_search_button)
+            select(class_search_button)
         else:
             print("entered")
-            #r_click(driver.find_element(By.NAME, "RSTS_IN")) # Clicks the action b
+            #select(driver.find_element(By.NAME, "RSTS_IN")) # Clicks the action b
             choices = driver.find_elements(By.TAG_NAME, "option")
             for i in choices:
                 if i.text == "(Add(ed) to Waitlist)":
-                    r_click(i)
+                    select(i)
             class_search_button = driver.find_elements(By.NAME, "REG_BTN")[-1]
             submit_change_button = driver.find_elements(By.NAME, "REG_BTN")[-2]
-            r_click(submit_change_button)
+            select(submit_change_button)
             time.sleep(10)
-            r_click(class_search_button)
+            select(class_search_button)
         print(f"Added CRN {crn}")
         WANTED_CRN.remove(int(crn))
 
@@ -101,7 +101,7 @@ while True:
         Department_Slider = driver.find_elements(By.TAG_NAME, "option")
         for i in Department_Slider:
             if i.text[:4] == Department:
-                r_click(i)
+                select(i)
         Course_Search_Button = driver.find_element(By.NAME, "SUB_BTN")
         Course_Search_Button.click()
         #Choosing the class
@@ -115,7 +115,7 @@ while True:
                     break
         # Click on the n'th button
         Class_Submit_Buttons = driver.find_elements(By.NAME, "SUB_BTN")
-        r_click(Class_Submit_Buttons[counter])
+        select(Class_Submit_Buttons[counter])
         # Finding and storing Class data
         class_grid2 = driver.find_elements(By.TAG_NAME, "td")
         Storing = False
@@ -153,7 +153,7 @@ while True:
         # Resetting for New search
         if not moved:
             New_Search_Button = driver.find_elements(By.NAME, "ADD_BTN")[-1]
-            r_click(New_Search_Button)
+            select(New_Search_Button)
         return Full_availability_list
         
     final_output = ""
